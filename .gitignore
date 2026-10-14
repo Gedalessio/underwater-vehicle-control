@@ -1,0 +1,18 @@
+# MATLAB and Simulink generated files
+slprj/
+*.slxc
+*_ert_rtw/
+*_grt_rtw/
+*.mex*
+*.asv
+*.m~
+*.slx.r*
+*.autosave
+
+# Generated plotting output
+matlab/ControlACer/
+matlab/ControlloEFermo/
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
