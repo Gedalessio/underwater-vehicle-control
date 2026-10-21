@@ -35,27 +35,7 @@ The simulated controller applies six generalized force/moment inputs directly. I
 | `ControlA.slx` | Position and Euler angles in the inertial frame | A model-based structure with PID feedback and restoring-force compensation. The full inertia/Coriolis/damping feedforward expression is retained in the code but is commented out in the saved version. |
 | `ControlE.slx` | Body-frame velocities, body-frame position error and quaternion orientation error | Adaptive feedback with a nine-component estimate used to compensate generalized forces and moments. |
 
-### Controller with model-based formulation
 
-The full formulation combines dynamic compensation with feedback:
-
-$$\tau=M^*\ddot p_r+C^*\dot p_r+D^*\dot p_r+g^*+\Lambda s.$$
-
-In the current saved model, the active command is $\tau=g^*+170s$, with $s$ combining proportional, derivative and integral error terms. This distinction matters when relating the source code to the original presentation.
-
-### Adaptive controller
-
-The adaptive command is
-
-$$\tau=K_Ds_v+K\tilde y+\Phi\hat\lambda,$$
-
-with the implemented update law
-
-$$\dot{\hat\lambda}=16\Phi^Ts_v.$$
-
-The hybrid pose error $\tilde y$ combines a position error expressed in the body frame with the vector part of the relative quaternion error. The estimate $\hat\lambda\in\mathbb{R}^9$ contributes to force/moment compensation through the regressor $\Phi$; it does not update the mass, Coriolis or damping matrices.
-
-Although the controller uses a quaternion error, the simulated pose is still integrated using Euler angles.
 
 ## Experiments and reported results
 
@@ -134,16 +114,6 @@ For regulation experiments, select the corresponding nearly constant reference g
 
 Simulink caches and generated plotting folders are excluded from version control.
 
-## Current status and next steps
-
-This repository documents the original course-project source and its reported results. The original models and scripts are preserved; `skew.m` is an added helper. No new MATLAB/Simulink execution has been performed when preparing this repository package.
-
-A source review identified items to address before claiming reproducible controller performance:
-
-- Make the circular-path velocity and acceleration outputs consistent with the generated position.
-- Align the angular kinematic matrices, their derivatives and the coordinate transformations in `ControlA`.
-- Check the restoring-force moment arms and the velocity/reference-frame conventions in `ControlE`.
-- Reconcile the saved control laws with the presentation and rerun both controllers under identical references and disturbances.
 
 See [implementation notes](docs/IMPLEMENTATION_NOTES.md) for the concrete source-level findings. The archived plots do not establish unique physical-parameter identification or a stability guarantee for the current saved implementation.
 
